@@ -80,4 +80,4 @@ jobs:
           cache-from: type=gha  # 使用 GitHub Actions 緩存加速構建
           cache-to: type=gha,mode=max  # 儲存緩存
 #          no-cache: true  # 完全禁用緩存(避免microdnf update未被更新)
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
