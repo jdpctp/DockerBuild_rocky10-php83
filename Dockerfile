@@ -56,6 +56,10 @@ RUN microdnf -y clean all
 RUN mkdir -p /etc/opt/remi/php83/php-fpm.d /var/opt/remi/php83/run/php-fpm && \
     chown -R 1000:1000 /var/opt/remi/php83/run/php-fpm
 
+# 確保緩存目錄存在並設置權限
+RUN mkdir -p /var/cache/yum && \
+    chown -R 1000:1000 /var/cache/yum
+
 ENV PATH="/opt/remi/php83/root/usr/sbin:$PATH"
 
 # 暴露端口
