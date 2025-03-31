@@ -32,7 +32,7 @@ jobs:
           context: .  # 使用當前目錄的 Dockerfile
           push: true  # 推送至 ghcr.io
           tags: |
-            ghcr.io/${{ github.repository_owner }}/rocky9-php83:latest  # 映像名稱
+            ghcr.io/${{ github.repository_owner }}/rocky9-php83:latest
             ghcr.io/${{ github.repository_owner }}/rocky9-php83:${{ github.run_id }}
           build-args: |
             BUILD_DATE=${{ github.event.repository.updated_at || github.event.head_commit.timestamp }}
