@@ -2,7 +2,7 @@ name: Daily Build and Push to GHCR
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 00:00 執行（可調整時間）
+    - cron: '0 16 * * *'  # 每天 GMT+8 00:00 執行（相當於 UTC 16:00）
   workflow_dispatch:     # 允許手動觸發
 
 jobs:
@@ -25,6 +25,13 @@ jobs:
           username: ${{ github.actor }}  # 您的 GitHub 用戶名
           password: ${{ secrets.GHCR_TOKEN }}  # GitHub 提供的 Token
 
+      # 獲取當前日期和時間（GMT+8）
+      - name: Get current date in GMT+8
+        id: date
+        env:
+          TZ: 'Asia/Taipei'  # 設置時區為 GMT+8
+        run: echo "date=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
+
       # 構建並推送映像
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -33,7 +40,7 @@ jobs:
           push: true  # 推送至 ghcr.io
           tags: |
             ghcr.io/${{ github.repository_owner }}/rocky9-php83:latest
-            ghcr.io/${{ github.repository_owner }}/rocky9-php83:${{ github.run_id }}
+            ghcr.io/${{ github.repository_owner }}/rocky9-php83:${{ env.date }}
           build-args: |
             BUILD_DATE=${{ github.event.repository.updated_at || github.event.head_commit.timestamp }}
           cache-from: type=gha  # 使用 GitHub Actions 緩存加速構建
