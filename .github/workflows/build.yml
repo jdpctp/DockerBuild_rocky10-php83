@@ -24,7 +24,6 @@ jobs:
           TZ: 'Asia/Taipei'  # 設置時區為 GMT+8
         run: echo "date=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
 
-
       # 拉取現有映像並提取 php83-php 版本
       - name: Extract current php83-php version from existing image
         id: extract_version
@@ -45,10 +44,10 @@ jobs:
         if: env.PHP_UPDATE_AVAILABLE != 'true'
         run: |
           CHECK_RESULT=$(docker run --rm --user root ghcr.io/${{ github.repository_owner }}/rocky9-php83:latest bash -c "
-            microdnf check-update php83-php || true
+            microdnf makecache && microdnf upgrade --refresh --assumeno php83-php 2>&1 || true
           ")
           echo "$CHECK_RESULT"  # 顯示結果供日誌查看
-          if echo "$CHECK_RESULT" | grep -q "^php83-php"; then
+          if echo "$CHECK_RESULT" | grep -q "to be upgraded"; then
             echo "Update available for php83-php (current: ${{ env.CURRENT_PHP_VERSION }})"
             echo "PHP_UPDATE_AVAILABLE=true" >> $GITHUB_ENV
           else
