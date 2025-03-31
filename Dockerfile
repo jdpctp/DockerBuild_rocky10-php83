@@ -35,7 +35,6 @@ RUN microdnf install -y net-tools telnet iputils iproute
 
 # 清理暫存檔案
 RUN microdnf -y clean all
-RUN rm -rf /var/cache
 
 # 設置 PHP-FPM 配置
 #RUN set -eux; \
