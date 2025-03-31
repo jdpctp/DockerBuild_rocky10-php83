@@ -44,7 +44,7 @@ jobs:
         id: check_updates
         if: env.PHP_UPDATE_AVAILABLE != 'true'
         run: |
-          CHECK_RESULT=$(docker run --rm ghcr.io/${{ github.repository_owner }}/rocky9-php83:latest bash -c "
+          CHECK_RESULT=$(docker run --rm --user root ghcr.io/${{ github.repository_owner }}/rocky9-php83:latest bash -c "
             microdnf check-update php83-php || true
           ")
           echo "$CHECK_RESULT"  # 顯示結果供日誌查看
