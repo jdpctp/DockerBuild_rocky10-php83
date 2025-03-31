@@ -23,7 +23,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}  # 您的 GitHub 用戶名
-          password: ${{ secrets.GITHUB_TOKEN }}  # GitHub 提供的 Token
+          password: ${{ secrets.GHCR_TOKEN }}  # GitHub 提供的 Token
 
       # 構建並推送映像
       - name: Build and push Docker image
