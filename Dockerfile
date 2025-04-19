@@ -8,18 +8,9 @@ RUN echo "Build date: $BUILD_DATE"
 # 更新所有套件，強制刷新元數據
 RUN microdnf clean all && microdnf -y update --refresh && microdnf -y upgrade
 
-# 更新所有套件
-#RUN microdnf -y update && microdnf -y upgrade
-
 # 安裝EPEL及remi repo
-#RUN microdnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 RUN rpm -ivh https://rpms.remirepo.net/enterprise/remi-release-9.rpm
-
-
-#RUN microdnf install -y https://rpms.remirepo.net/enterprise/remi-release-9.rpm
-#    microdnf install -y microdnf-plugins-core && \
-#    microdnf config-manager --set-enabled remi-php83
 
 # 更新元數據
 RUN microdnf -y update

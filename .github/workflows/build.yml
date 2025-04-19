@@ -1,4 +1,4 @@
-name: Daily Build and Push to GHCR
+name: Weekly Build and Push to GHCR
 
 on:
   schedule:
