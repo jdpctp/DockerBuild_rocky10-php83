@@ -2,7 +2,7 @@ name: Daily Build and Push to GHCR
 
 on:
   schedule:
-    - cron: '0 16 * * *'  # 每天 GMT+8 00:00 執行（相當於 UTC 16:00）
+    - cron: '0 16 * * 1'  # 每週一 GMT+8 00:00 執行（相當於 UTC 16:00）
   workflow_dispatch:     # 允許手動觸發
 
 jobs:
@@ -24,40 +24,8 @@ jobs:
           TZ: 'Asia/Taipei'  # 設置時區為 GMT+8
         run: echo "date=$(date +'%Y%m%d%H%M')" >> $GITHUB_ENV
 
-      # 拉取現有映像並提取 php83-php 版本
-      - name: Extract current php83-php version from existing image
-        id: extract_version
-        run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/rocky9-php83:latest || true
-          CURRENT_VERSION=$(docker run --rm ghcr.io/${{ github.repository_owner }}/rocky9-php83:latest rpm -q php83-php --qf '%{VERSION}-%{RELEASE}' || echo "none")
-          if [ "$CURRENT_VERSION" = "none" ]; then
-            echo "No existing image or php83-php found, forcing update"
-            echo "PHP_UPDATE_AVAILABLE=true" >> $GITHUB_ENV
-          else
-            echo "Current php83-php version: $CURRENT_VERSION"
-            echo "CURRENT_PHP_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
-          fi
-
-      # 從現有映像檢查 php83-php 是否有更新
-      - name: Check for php83-php updates
-        id: check_updates
-        if: env.PHP_UPDATE_AVAILABLE != 'true'
-        run: |
-          CHECK_RESULT=$(docker run --rm --user root ghcr.io/${{ github.repository_owner }}/rocky9-php83:latest bash -c "
-            microdnf makecache && microdnf upgrade --refresh --assumeno php83-php 2>&1 || true
-          ")
-          echo "$CHECK_RESULT"  # 顯示結果供日誌查看
-          if echo "$CHECK_RESULT" | grep -q "to be upgraded"; then
-            echo "Update available for php83-php (current: ${{ env.CURRENT_PHP_VERSION }})"
-            echo "PHP_UPDATE_AVAILABLE=true" >> $GITHUB_ENV
-          else
-            echo "No update available for php83-php (current: ${{ env.CURRENT_PHP_VERSION }})"
-            echo "PHP_UPDATE_AVAILABLE=false" >> $GITHUB_ENV
-          fi
-
-      # 登入 GitHub Container Registry（僅在有更新時執行）
+      # 登入 GitHub Container Registry
       - name: Log in to GHCR
-        if: env.PHP_UPDATE_AVAILABLE == 'true'
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
@@ -65,9 +33,8 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}  # GitHub 提供的 Token
 
 
-      # 構建並推送映像（僅在有更新時執行）
+      # 構建並推送映像
       - name: Build and push Docker image
-        if: env.PHP_UPDATE_AVAILABLE == 'true'
         uses: docker/build-push-action@v4
         with:
           context: .  # 使用當前目錄的 Dockerfile
@@ -80,4 +47,4 @@ jobs:
           cache-from: type=gha  # 使用 GitHub Actions 緩存加速構建
           cache-to: type=gha,mode=max  # 儲存緩存
 #          no-cache: true  # 完全禁用緩存(避免microdnf update未被更新)
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64

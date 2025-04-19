@@ -25,8 +25,8 @@ RUN rpm -ivh https://rpms.remirepo.net/enterprise/remi-release-9.rpm
 RUN microdnf -y update
 
 # 安裝Microsoft ODBC Driver for SQL Server on Linux
-RUN curl https://packages.microsoft.com/config/rhel/9/prod.repo | tee /etc/yum.repos.d/mssql-release.repo && \
-    ACCEPT_EULA=Y microdnf install -y msodbcsql17
+#RUN curl https://packages.microsoft.com/config/rhel/9/prod.repo | tee /etc/yum.repos.d/mssql-release.repo && \
+#    ACCEPT_EULA=Y microdnf install -y msodbcsql17
 
 # 安裝PHP 8.3及相關套件
 RUN microdnf install -y php83-php php83-php-fpm php83-php-gd php83-php-mbstring php83-php-opcache php83-php-zip php83-php-intl php83-php-xmlrpc php83-php-soap php83-php-mysqli php83-php-pecl-redis6
