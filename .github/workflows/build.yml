@@ -8,9 +8,6 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read     # 讀取代碼是基本需求
-      packages: write    # 賦予 GITHUB_TOKEN 寫入 GHCR 的權限 (GHCR = packages)    
     steps:
       # 簽出倉庫程式碼
       - name: Checkout repository
@@ -33,7 +30,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}  # 您的 GitHub 用戶名
-          password: ${{ secrets.GITHUB_TOKEN }}   # 使用 GitHub Actions 內建的 GITHUB_TOKEN 作為密碼
+          password: ${{ secrets.GHCR_TOKEN }}  # GitHub 提供的 Token
 
 
       # 構建並推送映像
