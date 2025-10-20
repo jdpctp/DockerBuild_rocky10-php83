@@ -1,5 +1,5 @@
-# 使用Rocky Linux 9為基底
-FROM rockylinux/rockylinux:9-minimal
+# 使用Rocky Linux 10為基底
+FROM rockylinux/rockylinux:10-minimal
 
 # 加入動態日期，讓緩存失效
 ARG BUILD_DATE
@@ -9,8 +9,8 @@ RUN echo "Build date: $BUILD_DATE"
 RUN microdnf clean all && microdnf -y update --refresh && microdnf -y upgrade
 
 # 安裝EPEL及remi repo
-RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-RUN rpm -ivh https://rpms.remirepo.net/enterprise/remi-release-9.rpm
+RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
+RUN rpm -ivh https://rpms.remirepo.net/enterprise/remi-release-10.rpm
 
 # 更新元數據
 RUN microdnf -y update
