@@ -1,12 +1,12 @@
-# DockerWeeklyBuild_rocky9-php83
-Rocky Linux 9 minimal + php83-php-fpm (每週一dnf update，重新Build Docker Image)
+# DockerWeeklyBuild_rocky10-php83
+Rocky Linux 10 minimal + php83-php-fpm (每週一dnf update，重新Build Docker Image)
 
 docker-compose.yml
 ```
 services:
   php83:
     container_name: php83
-    image: ghcr.io/jdpctp/rocky9-php83:latest
+    image: ghcr.io/jdpctp/rocky10-php83:latest
     restart: unless-stopped
     user: 1000:1000
     volumes:
