@@ -8,6 +8,9 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read     # 讀取代碼是基本需求
+      packages: write    # 賦予 GITHUB_TOKEN 寫入 GHCR 的權限 (GHCR = packages)    
     steps:
       # 簽出倉庫程式碼
       - name: Checkout repository
