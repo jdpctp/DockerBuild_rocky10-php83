@@ -20,7 +20,7 @@ RUN microdnf -y update
 #    ACCEPT_EULA=Y microdnf install -y msodbcsql17
 
 # 安裝PHP 8.3及相關套件
-RUN microdnf install -y php83-php php83-php-fpm php83-php-gd php83-php-mbstring php83-php-opcache php83-php-zip php83-php-intl php83-php-xmlrpc php83-php-soap php83-php-mysqli php83-php-pecl-redis6
+RUN microdnf install -y php83-php php83-php-fpm php83-php-gd php83-php-mbstring php83-php-opcache php83-php-zip php83-php-intl php83-php-xmlrpc php83-php-soap php83-php-mysqli php83-php-pecl-redis6 php83-php-pecl-imagick-im7
 
 RUN microdnf install -y net-tools telnet iputils iproute
 
